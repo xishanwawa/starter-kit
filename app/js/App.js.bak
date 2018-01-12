@@ -2,9 +2,14 @@ import React from 'react';
 import {
   render,
 } from 'react-dom';
-
-import { Link, hashHistory, browserHistory, Router, Route, IndexRoute } from 'react-router';
-
+import {
+  Router,
+  Route,
+  Link,
+  IndexRoute,
+  hashHistory,
+  withRouter,
+} from 'react-router';
 import {
   Container,
   TabBar,
@@ -31,15 +36,20 @@ class App extends React.Component {
       <Container direction="column" id="sk-container">
         <Container
           transition={transition}
+          // fade transition example
+          // transition='fade'
+          // transitionEnterTimeout={450}
+          // transitionLeaveTimeout={300}
         >
           {React.cloneElement(children, {key: location.key})}
         </Container>
+
         <TabBar
           amStyle="primary"
         >
           <TabBar.Item
             component={Link}
-            title="看板"
+            title="商机"
             icon = "bars"
             selected={router.isActive('/', true)}
             to="/"
@@ -47,18 +57,29 @@ class App extends React.Component {
           />
           <TabBar.Item
             component={Link}
-            title="商机"
+            title="客户"
+            icon = "person"
+            selected={router.isActive('/', true)}
+            to="/"
+            onlyActiveOnIndex
+          />
+          
+          <TabBar.Item
+            component={Link}
+            title="看板"
             icon = "pages"
-            selected={router.isActive('/busiopty', true)}
-            to="/busiopty"
+            selected={router.isActive('/about', true)}
+            to="/about"
             onlyActiveOnIndex
           />
           <TabBar.Item
             component={Link}
-            title="客户"
-            icon = "person"
-            selected={router.isActive('/account', true)}
-            to="/account/list"
+            title="消息"
+            icon = "sound"
+            badge="10"
+            // @see https://github.com/reactjs/react-router/blob/0616f6e14337f68d3ce9f758aa73f83a255d6db3/docs/API.md#isactivepathorloc-indexonly
+            selected={router.isActive('/about', true)}
+            to="/about"
             onlyActiveOnIndex
           />
         </TabBar>
@@ -67,28 +88,20 @@ class App extends React.Component {
   }
 }
 
-import Index from './pages/home';
+// Pages
+import Index from './pages/Index';
+import Page from './pages/Page';
 
-import BusiOptyList from './pages/busi-opty/list';
-
-import AccountList from './pages/account/list';
-
-import AccountAdd from './pages/account/add';
-
+// withRouter HoC
+// @see https://github.com/reactjs/react-router/blob/0616f6e14337f68d3ce9f758aa73f83a255d6db3/upgrade-guides/v2.4.0.md#v240-upgrade-guide
 const routes = (
   <Router history={hashHistory}>
     <Route path="/" component={App}>
       <IndexRoute component={Index} />
-      <Route path="busiopty" component={BusiOptyList} />
-      <Route path="account/list" component={AccountList} />
-      <Route path="account/add" component={AccountAdd} />
+      <Route path=":page" component={Page} />
     </Route>
   </Router>
 );
-
-
-//import project from './routes/project';
-// import app from 'app';
 
 document.addEventListener('DOMContentLoaded', () => {
   render(routes, document.getElementById('root'));

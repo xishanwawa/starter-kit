@@ -3,6 +3,7 @@
 const path = require('path');
 const autoprefixer = require('autoprefixer');
 const webpack = require('webpack');
+const CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 
@@ -11,20 +12,28 @@ const minPostfix = isProd ? '.min' : '';
 const minify = isProd ? 'minimize' : '';
 const hash = '[hash:7]';
 
-const entry = './app/js/entry.js';
-const devEntry = [
+const entry = {
+  main: './app/js/entry.js',
+  vendor: ['react-router', 'react-addons-css-transition-group', 'amazeui-touch', 'echarts-for-react']
+};
+
+const devEntry = {
+  main: [
   'webpack/hot/dev-server',
   'webpack-hot-middleware/client?reload=true',
-  entry,
-];
+  './app/js/entry.js'
+  ],
+  vendor: ['react-router', 'react-addons-css-transition-group', 'amazeui-touch', 'echarts', 'echarts-for-react']
+};
 const basePlugins = [
+  new webpack.optimize.CommonsChunkPlugin( /* chunkName= */ "vendor", /* filename= */ "vendor.bundle.js"),
   new webpack.DefinePlugin({
     'process.env': {
       'NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
     }
   }),
   new HTMLWebpackPlugin({
-    title: 'Amaze UI Touch Starter Kit',
+    title: 'CRM H5',
     template: 'app/index.html',
     // inject: false,
     prod: isProd,
@@ -59,14 +68,23 @@ module.exports = {
 
   output: {
     path: path.join(__dirname, 'dist'),
-    filename: `js/app.${hash}${minPostfix}.js`,
+    filename: !isProd ? "js/[name].min.js" : `js/app.${hash}${minPostfix}.js`,
     publicPath: '/'
   },
-
+  externals: {
+    echarts: "echarts",
+		react: 'React',
+		'react-dom': 'ReactDOM'
+	},
+  resolve: {
+    extensions: ["", ".web.js", ".js", ".jsx"],
+    alias: {
+      common: path.join(__dirname, 'app/js/pages/common')
+    }
+  },
   module: {
-    loaders: [
-      {
-        test: /\.jsx?$/,
+    loaders: [{
+        test: /\.(js|jsx)$/,
         loaders: [
           'babel',
           // 'eslint',
@@ -124,7 +142,9 @@ module.exports = {
   // },
 
   // loader config
-  postcss: [autoprefixer({browsers: ['> 1%', 'last 2 versions', 'ie 10']})],
+  postcss: [autoprefixer({
+    browsers: ['> 1%', 'last 2 versions', 'ie 10']
+  })],
 
   // @see https://www.npmjs.com/package/image-webpack-loader
   imageWebpackLoader: {}

@@ -39,7 +39,7 @@ export default class Index extends React.Component {
       <View>
         <NavBar
           amStyle="primary"
-          title="AMT Starter Kit"
+          title="销售看板"
         />
         <Container scrollable>
           <Group

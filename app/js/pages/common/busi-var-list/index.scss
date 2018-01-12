@@ -1,0 +1,25 @@
+.data-content {
+    background: #ffffff;
+    border: 1px solid #e6e6e6;
+    border-width: 1px 0;
+    margin: 0.4em 0;
+    padding: 0.4em;
+    font-size: 0.8em;
+    .data-header {
+        .col {
+            color: #0099FF;
+        }
+    }
+    .data-body {
+        .col {
+            padding-top: 0.5em;
+            padding-bottom: 0.5em;
+        }
+    }
+    .data-footer {
+        margin: 0.4em 0;
+        .col {
+            color: #0099FF;
+        }
+    }
+}

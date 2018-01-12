@@ -11,7 +11,10 @@
   "engines": {
     "node": ">=4.0.0"
   },
-  "dependencies": {},
+  "dependencies": {
+    "echarts": "^3.8.5",
+    "echarts-for-react": "^2.0.4"
+  },
   "devDependencies": {
     "amazeui-touch": "^1.0.0",
     "autoprefixer": "^6.4.0",
@@ -35,7 +38,7 @@
     "file-loader": "^0.9.0",
     "html-webpack-plugin": "^2.21.0",
     "image-webpack-loader": "^2.0.0",
-    "node-sass": "^3.8.0",
+    "node-sass": "^4.5.3",
     "postcss-loader": "^0.9.1",
     "react": "^15.3.0",
     "react-addons-css-transition-group": "^15.3.0",
@@ -54,7 +57,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rimraf dist",
-    "start": "npm run clean && node server.js",
+    "start": "npm run clean && node serve.js",
     "build": "npm run clean && cross-env NODE_ENV=production webpack --webpack.config.babel.js --progress",
     "preview": "npm run build && browser-sync start --server dist"
   }
